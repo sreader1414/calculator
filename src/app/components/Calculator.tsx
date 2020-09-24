@@ -79,7 +79,7 @@ function Calculator() {
     };
 
     let calculatorKeysNumbered = [];
-    for(let i = 0; i<9; i++) {
+    for(let i = 9; i>0; i--) {
         calculatorKeysNumbered.push(<CalculatorKey key={`calc_key_${i}`} keyValue={i} onClick={handleOperation} />)
     }
 
