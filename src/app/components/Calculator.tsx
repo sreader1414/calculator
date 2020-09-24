@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from "react";
 import CalculatorKey from "./CalculatorButton";
-import "./Calculator.css";
+import "../styles/Calculator.css";
 
 function Calculator() {
-    const [prevValue, setPrevValue] = useState(null);
+    const [previousValue, setPreviousValue] = useState(null);
     const [nextValue, setNextValue] = useState("0");
+    const [holdValue, setHoldValue] = useState(null);
     const [op, setOp] = useState(null);
 
-    useEffect(() => {}, [op, nextValue, prevValue]);
+    useEffect(() => {}, [op, nextValue, previousValue, setHoldValue]);
 
     const CalculatorOperations: { [key: string]: (firstValue: number, secondValue: number)=>number } = {
         "+": (firstValue, secondValue) => firstValue + secondValue,
@@ -17,14 +18,21 @@ function Calculator() {
         "=": (firstValue, secondValue)  => secondValue,
     };
 
-    const performOperation = () => {
+    const performOperation = (equal:boolean) => {
         let temp = CalculatorOperations[op](
-            parseFloat(prevValue),
+            parseFloat(previousValue),
             parseFloat(nextValue)
         );
-        setOp(null);
-        setNextValue(String(temp));
-        setPrevValue(null);
+        if (equal) {
+            setOp(null);
+            setNextValue(String(temp));
+            setHoldValue(String(null));
+            setPreviousValue(null);
+        } else {
+            setPreviousValue(String(temp));
+            setHoldValue(String(temp));
+            setNextValue("");
+        }
     };
 
     const handleNum = (number: number) => {
@@ -39,8 +47,8 @@ function Calculator() {
     const percentage = () => {
         // @ts-ignore
         setNextValue(parseFloat(nextValue) / 100);
-        if (prevValue && nextValue === "") {
-            setPrevValue(parseFloat(prevValue) / 100);
+        if (previousValue && nextValue === "") {
+            setPreviousValue(parseFloat(previousValue) / 100);
         }
     };
     const changeSign = () => {
@@ -49,7 +57,8 @@ function Calculator() {
     };
     const clearData = () => {
         setNextValue("0");
-        setPrevValue(0);
+        setPreviousValue(0);
+        setOp(null);
     };
 
     const handleOperation = (value:string) => {
@@ -58,14 +67,18 @@ function Calculator() {
         } else if (value in CalculatorOperations) {
             if (op === null) {
                 setOp(value);
-                setPrevValue(nextValue);
+                setPreviousValue(nextValue);
                 setNextValue("");
+                setHoldValue(null);
             }
             if (op) {
                 setOp(value);
             }
-            if (prevValue && op && nextValue) {
-                performOperation();
+            if (previousValue && op && nextValue && value !== '=') {
+                performOperation(false);
+            }
+            if (previousValue && op && nextValue && value == '=') {
+                performOperation(true);
             }
         } else if (value === "c") {
             clearData();
@@ -86,7 +99,7 @@ function Calculator() {
     return (
         <div className="calculator">
             <div className="calculator-input">
-                <div className="result">{nextValue} </div>
+                <div className="result">{nextValue === "" && holdValue ? holdValue : nextValue} </div>
             </div>
             <div className="calculator-keypad">
                 <div className="keys-function">

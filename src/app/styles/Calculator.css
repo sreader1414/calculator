@@ -2,6 +2,7 @@
     width: 20rem;
     height: 30rem;
     background-color: #393939;
+    border-radius: 1rem;
     display: grid;
     padding: 1%;
     position: absolute;

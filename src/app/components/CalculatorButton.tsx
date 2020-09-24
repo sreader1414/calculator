@@ -1,5 +1,5 @@
 import React from "react";
-import "./CalculatorButton.css";
+import "../styles/CalculatorButton.css";
 
 function CalculatorKey(props: { className?: string; onClick: (arg0: any) => void; keyValue: string|number; }) {
     return (
