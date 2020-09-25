@@ -6,24 +6,16 @@ import { numberValues } from '../constants';
 export const Calculator: FC = () => {
     const { nextValue, holdValue, clearData, changeSign, percentage, insertDot, handleNumberInput, handleOperation } = useCalculator();
 
-    useEffect(() => {
-        console.log(nextValue)
-    }, [nextValue]);
-
-    const numberButtons = useMemo(
-        () =>
-            numberValues.map((number) => {
-                console.log('test');
-                return (
-                    <CalculatorButton
-                        key={number}
-                        keyValue={number}
-                        onClick={handleNumberInput}
-                    />
-                );
-            }),
-        []
-    );
+    const numberButtons =
+        numberValues.map((number) => {
+            return (
+                <CalculatorButton
+                    key={number}
+                    keyValue={number}
+                    onClick={handleNumberInput}
+                />
+            );
+        });
 
     return (
         <div className="calculator">
@@ -59,7 +51,7 @@ export const Calculator: FC = () => {
                     <CalculatorButton
                         className="key-zero"
                         keyValue={0}
-                        onClick={handleOperation}
+                        onClick={handleNumberInput}
                     />
                 </div>
             </div>
