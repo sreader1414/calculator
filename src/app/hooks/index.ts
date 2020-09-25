@@ -11,78 +11,74 @@ export const CalculatorOperations: {
 };
 
 export const useCalculator = () => {
-  const [previousValue, setPreviousValue] = useState(null);
-  const [nextValue, setNextValue] = useState('0');
+  const [firstOperand, setFirstOperand] = useState(null);
+  const [secondOperand, setSecondOperand] = useState('0');
   const [op, setOp] = useState(null);
   const [holdValue, setHoldValue] = useState(null);
 
   const clearData = () => {
-    setNextValue('0');
-    setPreviousValue(0);
+    setSecondOperand('0');
+    setFirstOperand(0);
     setOp(null);
   };
 
   const changeSign = () => {
-    let changeNumber = nextValue ? nextValue : previousValue;
+    let changeNumber = secondOperand ? secondOperand : firstOperand;
     // @ts-ignore
-    setNextValue(parseFloat(changeNumber) * -1);
+    setSecondOperand(parseFloat(changeNumber) * -1);
   };
 
   const insertDot = () => {
-    if (!/\./.test(nextValue)) {
-      setNextValue(nextValue + '.');
+    if (!/\./.test(secondOperand)) {
+      setSecondOperand(secondOperand + '.');
     }
   };
 
   const percentage = () => {
-    let percentNumber = nextValue ? nextValue : previousValue;
+    let percentNumber = secondOperand ? secondOperand : firstOperand;
     // @ts-ignore
-    setNextValue(parseFloat(percentNumber) / 100);
-    if (previousValue && nextValue === '') {
-      setPreviousValue(parseFloat(previousValue) / 100);
+    setSecondOperand(parseFloat(percentNumber) / 100);
+    if (firstOperand && secondOperand === '') {
+      setFirstOperand(parseFloat(firstOperand) / 100);
     }
   };
 
   const performOperation = () => {
     let temp = CalculatorOperations[op](
-      parseFloat(previousValue),
-      parseFloat(nextValue)
+      parseFloat(firstOperand),
+      parseFloat(secondOperand)
     );
     setHoldValue(String(temp));
-    setPreviousValue(String(temp));
-    setNextValue("");
-  };
-
-  const handleNum = (number: number) => {
-    console.log('op:',op, '  prev:',previousValue,  '  hold:', holdValue,  '  next:', nextValue)
-    if (op === null && previousValue === null && holdValue && nextValue) {
-      setNextValue(String(number))
-    } else {
-      setNextValue(nextValue === '0' ? String(number) : nextValue + number);
-    }
+    setFirstOperand(String(temp));
+    setSecondOperand("");
   };
 
   const handleNumberInput = (value: string) => {
-      handleNum(parseInt(value, 10));
+    let number = parseInt(value, 10);
+    if (op === null && firstOperand === null && holdValue && secondOperand) {
+      setSecondOperand(value)
+    } else {
+      setSecondOperand(secondOperand === '0' ? String(number) : secondOperand + number);
+    }
   };
 
   const handleOperation = (value: string) => {
     if (op === null) {
       setOp(value);
-      setPreviousValue(nextValue);
-      setNextValue('');
-      setHoldValue(nextValue);
+      setFirstOperand(secondOperand);
+      setSecondOperand('');
+      setHoldValue(secondOperand);
     }
     if (op) {
       setOp(value);
     }
-    if (previousValue && op && nextValue) {
+    if (firstOperand && op && secondOperand) {
       performOperation();
     }
   };
 
   return {
-    nextValue,
+    secondOperand,
     holdValue,
     clearData,
     changeSign,

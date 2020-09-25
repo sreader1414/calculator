@@ -4,7 +4,7 @@ import { useCalculator, CalculatorOperations } from '../hooks';
 import { numberValues } from '../constants';
 
 export const Calculator: FC = () => {
-    const { nextValue, holdValue, clearData, changeSign, percentage, insertDot, handleNumberInput, handleOperation } = useCalculator();
+    const { secondOperand, holdValue, clearData, changeSign, percentage, insertDot, handleNumberInput, handleOperation } = useCalculator();
 
     const numberButtons =
         numberValues.map((number) => {
@@ -21,7 +21,7 @@ export const Calculator: FC = () => {
         <div className="calculator">
             <div className="calculator-input">
                 <div className="result">
-                    {nextValue === '' && holdValue ? holdValue : nextValue}{' '}
+                    {secondOperand === '' && holdValue ? holdValue : secondOperand}{' '}
                 </div>
             </div>
             <div className="calculator-keypad">
