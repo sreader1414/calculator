@@ -1,15 +1,17 @@
-import React from "react";
-import "../styles/CalculatorButton.css";
+import React, { FC } from 'react';
 
-function CalculatorKey(props: { className?: string; onClick: (arg0: any) => void; keyValue: string|number; }) {
-    return (
-        <button
-            className={`${props.className}`}
-            onClick={() => props.onClick(props.keyValue)}
-        >
-            {props.keyValue}{" "}
-        </button>
-    );
+interface Props {
+    keyValue: string | number;
+    onClick(selection: any): void;
+    className?: string;
 }
 
-export default CalculatorKey;
+export const CalculatorButton: FC<Props> = ({
+                                                keyValue,
+                                                onClick,
+                                                className,
+                                            }) => (
+    <button className={className} onClick={() => onClick(keyValue)}>
+        {keyValue}
+    </button>
+);
