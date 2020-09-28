@@ -1,6 +1,6 @@
 import React, {FC} from 'react';
 import { CalculatorButton } from './CalculatorButton';
-import { useCalculator, CalculatorOperations } from '../hooks';
+import { useCalculator, CalculatorOperations } from '../hooks/Hooks';
 import { numberValues } from '../constants';
 
 export const Calculator: FC = () => {

@@ -12,6 +12,6 @@
   },
   "include": [
     "./src/**/**/*",
-    "./src/web/web.ts"
-  ]
+  ],
+  "exclude": ["node_modules"]
 }
