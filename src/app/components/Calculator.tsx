@@ -1,4 +1,4 @@
-import React, {FC, useEffect, useMemo} from 'react';
+import React, {FC} from 'react';
 import { CalculatorButton } from './CalculatorButton';
 import { useCalculator, CalculatorOperations } from '../hooks';
 import { numberValues } from '../constants';
@@ -31,11 +31,12 @@ export const Calculator: FC = () => {
                     <CalculatorButton keyValue={'%'} onClick={percentage} />
                 </div>
                 <div className="keys-operators">
-                    {Object.keys(CalculatorOperations).map((operation, i) => {
+                    {Object.keys(CalculatorOperations).map((operation:keyof typeof CalculatorOperations, i:number) => {
                         return (
                             <CalculatorButton
                                 key={i}
-                                keyValue={operation}
+                                keyValue={CalculatorOperations[operation]}
+                                operationName = {operation}
                                 onClick={handleOperation}
                             />
                         );
