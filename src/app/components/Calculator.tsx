@@ -51,7 +51,7 @@ export const Calculator: FC = () => {
                     />
                     <CalculatorButton
                         className="key-zero"
-                        keyValue={0}
+                        keyValue={'0'}
                         onClick={handleNumberInput}
                     />
                 </div>
