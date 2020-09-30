@@ -4,10 +4,18 @@ import { useCalculator, CalculatorOperations } from '../hooks/Hooks';
 import { numberValues } from '../constants';
 
 export const Calculator: FC = () => {
-    const { secondOperand, holdValue, clearData, changeSign, percentage, insertDot, handleNumberInput, handleOperation } = useCalculator();
+    const { secondOperandRef, holdValueRef, clearData, changeSign, percentage, insertDot, handleNumberInput, handleOperation, useKeyPress } = useCalculator();
+
+    // Special case key press listeners
+    useKeyPress('0', 'number');
+    useKeyPress('Enter', 'operation', 'EQUALS');
+    useKeyPress('Backspace');
+    useKeyPress('%');
+    useKeyPress('.');
 
     const numberButtons =
         numberValues.map((number) => {
+            useKeyPress(String(number), "number");
             return (
                 <CalculatorButton
                     key={number}
@@ -21,7 +29,7 @@ export const Calculator: FC = () => {
         <div className="calculator">
             <div className="calculator-input">
                 <div className="result">
-                    {secondOperand === '' && holdValue ? holdValue : secondOperand}{' '}
+                    {secondOperandRef.current === '' && holdValueRef.current ? holdValueRef.current : secondOperandRef.current}{' '}
                 </div>
             </div>
             <div className="calculator-keypad">
@@ -32,6 +40,7 @@ export const Calculator: FC = () => {
                 </div>
                 <div className="keys-operators">
                     {Object.keys(CalculatorOperations).map((operation:keyof typeof CalculatorOperations, i:number) => {
+                        useKeyPress(CalculatorOperations[operation], "operation", operation);
                         return (
                             <CalculatorButton
                                 key={i}
